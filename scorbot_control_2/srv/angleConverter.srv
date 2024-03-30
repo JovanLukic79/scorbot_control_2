@@ -1,0 +1,16 @@
+# Request
+float64 scorbot_joint_1
+float64 scorbot_joint_2
+float64 scorbot_joint_3
+float64 scorbot_joint_4
+float64 scorbot_joint_5
+float64 scorbot_pad1_joint
+---
+
+# Response
+float64 scorbot_joint_1
+float64 scorbot_joint_2
+float64 scorbot_joint_3
+float64 scorbot_joint_4
+float64 scorbot_joint_5
+float64 scorbot_pad1_joint

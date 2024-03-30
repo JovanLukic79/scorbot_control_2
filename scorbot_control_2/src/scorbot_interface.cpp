@@ -1,0 +1,151 @@
+#include "scorbot_control_2/scorbot_interface.h"
+#include <std_msgs/UInt16MultiArray.h>
+#include "scorbot_control_2/angleConverter.h"
+
+
+ScorbotHwInterface::ScorbotHwInterface(ros::NodeHandle& nh) : nh_(nh), 
+            pnh_("~"),
+            pos_(6, 0),
+            vel_(6, 0),
+            eff_(6, 0),
+            cmd_(6, 0),
+            names_{"scorbot_joint_1", "scorbot_joint_2", "scorbot_joint_3", "scorbot_joint_4", "scorbot_joint_5", "scorbot_pad1_joint"}
+{
+    // Read from the param server
+    pnh_.param("joint_names", names_, names_);
+
+    // Init the publisher with the hardware
+    hardware_pub_ = pnh_.advertise<std_msgs::UInt16MultiArray>("/arduino/arm_actuate", 1000);
+    hardware_srv_ = pnh_.serviceClient<scorbot_control_2::angleConverter>("/radians_to_degrees");
+    
+    ROS_INFO("Starting Scorbot Hardware Interface...");
+
+    // connect and register joint state interface
+    hardware_interface::JointStateHandle state_handle1(names_.at(0), &pos_.at(0), &vel_.at(0), &eff_.at(0));
+    joint_state_interface_.registerHandle(state_handle1);
+    hardware_interface::JointStateHandle state_handle2(names_.at(1), &pos_.at(1), &vel_.at(1), &eff_.at(1));
+    joint_state_interface_.registerHandle(state_handle2);
+    hardware_interface::JointStateHandle state_handle3(names_.at(2), &pos_.at(2), &vel_.at(2), &eff_.at(2));
+    joint_state_interface_.registerHandle(state_handle3);
+    hardware_interface::JointStateHandle state_handle4(names_.at(3), &pos_.at(3), &vel_.at(3), &eff_.at(3));
+    joint_state_interface_.registerHandle(state_handle4);
+    hardware_interface::JointStateHandle state_handle5(names_.at(4), &pos_.at(4), &vel_.at(4), &eff_.at(4));
+    joint_state_interface_.registerHandle(state_handle5);
+    hardware_interface::JointStateHandle state_handle6(names_.at(5), &pos_.at(5), &vel_.at(5), &eff_.at(5));
+    joint_state_interface_.registerHandle(state_handle6);
+
+    registerInterface(&joint_state_interface_);
+
+    // connect and register joint position interface
+    // the motors accept position inputs
+    hardware_interface::JointHandle position_handle1(joint_state_interface_.getHandle(names_.at(0)), &cmd_.at(0));
+    joint_position_interface_.registerHandle(position_handle1);
+    hardware_interface::JointHandle position_handle2(joint_state_interface_.getHandle(names_.at(1)), &cmd_.at(1));
+    joint_position_interface_.registerHandle(position_handle2);
+    hardware_interface::JointHandle position_handle3(joint_state_interface_.getHandle(names_.at(2)), &cmd_.at(2));
+    joint_position_interface_.registerHandle(position_handle3);
+    hardware_interface::JointHandle position_handle4(joint_state_interface_.getHandle(names_.at(3)), &cmd_.at(3));
+    joint_position_interface_.registerHandle(position_handle4);
+    hardware_interface::JointHandle position_handle5(joint_state_interface_.getHandle(names_.at(4)), &cmd_.at(4));
+    joint_position_interface_.registerHandle(position_handle5);
+    hardware_interface::JointHandle position_handle6(joint_state_interface_.getHandle(names_.at(5)), &cmd_.at(5));
+    joint_position_interface_.registerHandle(position_handle6);
+
+    registerInterface(&joint_position_interface_);
+
+    ROS_INFO("Interfaces registered.");
+
+
+    ROS_INFO("Preparing the Controller Manager");
+
+    controller_manager_.reset(new controller_manager::ControllerManager(this, nh_));
+    update_freq_ = ros::Duration(0.1);
+    looper_ = nh_.createTimer(update_freq_, &ScorbotHwInterface::update, this);
+    
+    ROS_INFO("Ready to execute the control loop");
+}
+
+void ScorbotHwInterface::update(const ros::TimerEvent& e)
+{
+    // This function is called periodically in order to update the controller
+    // manager about the progress in the execution of the goal of the hardware
+    ROS_INFO("Update Event");
+    elapsed_time_ = ros::Duration(e.current_real - e.last_real);
+    read();
+    controller_manager_->update(ros::Time::now(), elapsed_time_);
+    write(elapsed_time_);
+}
+
+void ScorbotHwInterface::read()
+{
+    // Reads the current status of the Hardware (Arduino)
+    // Open Loop Control - no sensor available on the robot taht detects the effective
+    // angle of totation of each joint. Suppose that the motors are always able to follow
+    // the position command
+    pos_.at(0) = cmd_.at(0);
+    pos_.at(1) = cmd_.at(1);
+    pos_.at(2) = cmd_.at(2);
+    pos_.at(3) = cmd_.at(3);
+    pos_.at(4) = cmd_.at(4);
+    pos_.at(4) = cmd_.at(5);
+}
+
+void ScorbotHwInterface::write(ros::Duration elapsed_time)
+{    
+    // Send the command to the Hardware (Arduino)
+    // First converts the angle from the moveit/urdf convention 
+    // to the Arduino convention and then publishes the converted angles
+
+    scorbot_control_2::angleConverter srv;
+    srv.request.scorbot_joint_1 = cmd_.at(0);
+    srv.request.scorbot_joint_2 = cmd_.at(1);
+    srv.request.scorbot_joint_3 = cmd_.at(2);
+    srv.request.scorbot_joint_4 = cmd_.at(3);
+    srv.request.scorbot_joint_5 = cmd_.at(4);
+    srv.request.scorbot_pad1_joint = cmd_.at(5);
+
+
+    // Call the service and show the response of the service
+    if (hardware_srv_.call(srv))
+    {
+        // compose the array message
+        std::vector<unsigned int> angles_deg;
+        angles_deg.push_back(srv.response.scorbot_joint_1);
+        angles_deg.push_back(srv.response.scorbot_joint_2);
+        angles_deg.push_back(srv.response.scorbot_joint_3);
+        angles_deg.push_back(srv.response.scorbot_joint_4);
+        angles_deg.push_back(srv.response.scorbot_joint_5);
+        angles_deg.push_back(srv.response.scorbot_pad1_joint);
+
+        std_msgs::UInt16MultiArray msg;
+
+        // set up dimensions
+        msg.layout.dim.push_back(std_msgs::MultiArrayDimension());
+        msg.layout.dim[0].size = angles_deg.size();
+        msg.layout.dim[0].stride = 1;
+
+        // copy in the data
+        msg.data.clear();
+        msg.data.insert(msg.data.end(), angles_deg.begin(), angles_deg.end());
+
+        // publish the array message to the defined topic
+        hardware_pub_.publish(msg);
+    }
+    else
+    {
+        ROS_ERROR("Failed to call service radians_to_degrees");
+    }
+}
+
+
+int main(int argc, char** argv)
+{
+    ros::init(argc, argv, "scorbot_interface_node");
+    ros::NodeHandle nh;
+    ros::MultiThreadedSpinner spinner(2);
+    ScorbotHwInterface robot(nh);
+
+    // Keep ROS up and running
+    spinner.spin();
+    return 0;
+}
