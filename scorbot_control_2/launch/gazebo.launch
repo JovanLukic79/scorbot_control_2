@@ -22,4 +22,14 @@
   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
         args="-unpause -urdf -model robot -param robot_description" respawn="false" output="screen"/>
 
+
+    <!-- start trajectory controller GUI to control each joint separately -->
+  <node name="arm_control_gui" pkg="rqt_joint_trajectory_controller" type="rqt_joint_trajectory_controller" respawn="false" output="screen" >
+      <remap from="arm_controller/command" to="scorbot/arm_controller/command" />
+  </node>
+     
+
+
+  <rosparam file="$(find scorbot_moveit_2)/config/ros_controllers.yaml" command="load"/>
+
 </launch>
