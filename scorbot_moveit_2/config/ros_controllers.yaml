@@ -23,6 +23,8 @@ joint_state_controller:
   publish_rate: 50
 controller_list:
   []
+# "arm_controller" that we're using is not the actual controller..... 
+#"JointTrajectoryController" is the controller, arm controller is just the name that we set for that group of controller in the param file
 arm_controller:
   type: position_controllers/JointTrajectoryController
   joints:
