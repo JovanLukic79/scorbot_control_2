@@ -1,4 +1,4 @@
-# Project Title
+# Scorbot Hardware Interface
 
 Simple overview of use/purpose.
 
