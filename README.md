@@ -15,7 +15,7 @@ This repo describes one of my particular contribution of the overall platform wh
 This repo is made up of two packages. The first one is "scorbot_control_2". This package is where I defined my hardware interface for the robotic arm. In addition to that,"scorbot_control_2" consists of the robotic arm simulation pacakge named "gazebo.launch". The second package is "scorbot_moveit_2", was built using "moveit_setup_assistants". This contains "move_group.launch" the main node needed to communicate with the rest of ROS's control system. In addition to movegroup, this package would also provide moveit_rviz.launch file which woutld act as the main GUI needed to control your robotic arm. 
 
 
-## Scorbot Hardeare Interface ()
+## Scorbot Hardeare Interface (scorbot_interface.cpp)
 
 
 ## Getting Started
