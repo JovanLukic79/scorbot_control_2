@@ -43,7 +43,7 @@ cd catkin_ws
 source devel/setup.bash
 ```
 ```
-roslaunch scorbot_control_2 gaebo.launch
+roslaunch scorbot_control_2 gazebo.launch
 ```
 This file launches the simulation used to simulate robotic arm articulation. Gazebo is being used as the main simulation framework, and the name of the urdf used to define scorbot's simulation build can be found in "scorbot_fixed_to_ground.urdf.xacro"
 
@@ -78,7 +78,7 @@ cd catkin_ws
 source devel/setup.bash
 ```
 ```
-roslaunch scorbot_moveit_2 moveit_group.launch
+roslaunch scorbot_moveit_2 move_group.launch
 ```
 part of the "scorbot_moveit_2" moveit package. This launch file launches the main move_group node which provides all the necessary topics needed to communicate with the rest of the control system.
 
@@ -124,7 +124,7 @@ cd catkin_ws
 source devel/setup.bash
 ```
 ```
-roslaunch scorbot_moveit_2 moveit_group.launch
+roslaunch scorbot_moveit_2 move_group.launch
 ```
 Step 3: Launch Simulation
 ```
@@ -134,7 +134,7 @@ cd catkin_ws
 source devel/setup.bash
 ```
 ```
-roslaunch scorbot_control_2 gaebo.launch
+roslaunch scorbot_control_2 gazebo.launch
 ```
 Step 3: Launch RVIZ GUI
 ```
