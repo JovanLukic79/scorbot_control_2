@@ -66,26 +66,83 @@ If the robotic arm does not show up during the initial lauch:
 ![robot_arm_gui](https://github.com/JovanLukic79/scorbot_control_2/assets/115774118/eb73f351-7609-4f60-84fd-fcbaad04d8b4)
 
 
+## movegroup (move_group.launch)
+```
+cd catkin_ws
+```
+```
+source devel/setup.bash
+```
+```
+roslaunch scorbot_moveit_2 moveit_group.launch
+```
+part of the "scorbot_moveit_2" moveit package. This launch file launches the main move_group node which provides all the necessary topics needed to communicate with the rest of the control system.
+
+Additions were made in order to have move_group work accordingly with scorbot_interface node.
 ## Getting Started
 
 ### Dependencies
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
+* Unbuntu 18.04, ROS Melodic (however should work with ROS Noetic)
+* ros_controllers: https://github.com/ros-controls/ros_controllers
+* Moveit: https://moveit.ros.org/install/
+* Ros Gazebo Pakcages: https://github.com/ros-simulation/gazebo_ros_pkgs
 
 ### Installing
-
-* How/where to download your program
-* Any modifications needed to be made to files/folders
-
+```
+cd catkin_ws/src
+```
+```
+git clone https://github.com/JovanLukic79/scorbot_control_2
+```
+```
+cd ..
+```
+```
+catkin_make
+```
 ### Executing program
-
-* How to run the program
-* Step-by-step bullets
+Step 1: Launch controllers
 ```
-code blocks for commands
+cd catkin_ws
 ```
-
+```
+source devel/setup.bash
+```
+```
+roslaunch scorbot_control_2 controller.launch
+```
+Step 2: Launch move group
+```
+cd catkin_ws
+```
+```
+source devel/setup.bash
+```
+```
+roslaunch scorbot_moveit_2 moveit_group.launch
+```
+Step 3: Launch Simulation
+```
+cd catkin_ws
+```
+```
+source devel/setup.bash
+```
+```
+roslaunch scorbot_control_2 gaebo.launch
+```
+Step 3: Launch RVIZ GUI
+```
+cd catkin_ws
+```
+```
+source devel/setup.bash
+```
+```
+roslaunch scorbot_moveit_2 moveit_rviz.launch
+```
+top left corner: File > open config > catkin_ws > src > scorbot_control_2 > scorbot_moveit_2 > launch > moveit.rviz
 ## Help
 
 Any advise for common problems or issues.
