@@ -15,7 +15,7 @@ This repo describes one of my particular contribution of the overall platform wh
 This repo is made up of two packages. The first one is "scorbot_control_2". This package is where I defined my hardware interface for the robotic arm. In addition to that,"scorbot_control_2" consists of the robotic arm simulation pacakge named "gazebo.launch". The second package is "scorbot_moveit_2", was built using "moveit_setup_assistants". This contains "move_group.launch" the main node needed to communicate with the rest of ROS's control system. In addition to movegroup, this package would also provide moveit_rviz.launch file which woutld act as the main GUI needed to control your robotic arm. 
 
 
-## Scorbot Hardeare Interface (Controller.launch)
+## Scorbot Hardware Interface (Controller.launch)
 ```
 cd catkin_ws
 ```
@@ -25,6 +25,26 @@ source devel/setup.bash
 ```
 roslaunch scorbot_control_2 controller.launch
 ```
+This launch file launches scorbot_interface_node which is the node that interfaces with the ros_control system, and this node was defined in "scorbot_interface.cpp" file. A publisher ("/arduino/arm_actuate") was created in order to have this node publish data in ones embedded controllers.
+
+It also contains "angle_converter_cpp" node, which was created in order to convert raidians to degrees. This is defined in the "angle_converter.cpp" file and this is used becasue ROS uses radians, and arduino (for example) uses degress. 
+
+This launch file also contains the control manager that launches all the controllers being used. In this case, the controller being used to control both the arm joints and the gripper is "position_controllers/JointTrajectoryController". which is provided by ros_control.
+
+## Simulation (gazebo.launch)
+```
+cd catkin_ws
+```
+```
+source devel/setup.bash
+```
+```
+roslaunch scorbot_control_2 gaebo.launch
+```
+This file launches the simulation used to simulate robotic arm articulation. Gazebo is being used as the main simulation framework, and the name of the urdf used to define scorbot's simulation build can be found in "scorbot_fixed_to_ground.urdf.xacro"
+
+This file also lauches "arm_control_gui". A package that provides a gui in order to articulate each joint individually.
+
 ## Getting Started
 
 ### Dependencies
