@@ -38,7 +38,7 @@ This launch file launches scorbot_interface_node which is the node that interfac
 
 It also contains "angle_converter_cpp" node, which was created in order to convert raidians to degrees. This is defined in the "angle_converter.cpp" file and this is used becasue ROS uses radians, and arduino (for example) uses degrees. 
 
-This launch file also contains the control manager that launches all the controllers being used. In this case, the controller being used to control both the arm joints and the gripper is "position_controllers/JointTrajectoryController". which is provided by ros_control.
+This launch file also contains the control manager that launches all the controllers being used. In this case, the controller being used to control both the arm joints and the gripper is "position_controllers/JointTrajectoryController". which is provided by ros_controllers.
 
 ## Simulation (gazebo.launch)
 ```
