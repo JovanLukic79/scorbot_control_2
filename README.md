@@ -45,6 +45,9 @@ This file launches the simulation used to simulate robotic arm articulation. Gaz
 
 This file also lauches "arm_control_gui". A package that provides a gui in order to articulate each joint individually.
 
+![robot_arm_sim](https://github.com/JovanLukic79/scorbot_control_2/assets/115774118/3892b64b-a1bb-4a35-8788-b7521585229c)
+
+
 ## Getting Started
 
 ### Dependencies
