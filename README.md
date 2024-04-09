@@ -14,6 +14,10 @@ This repo describes one of my particular contribution of the overall platform wh
 
 This repo is made up of two packages. The first one is "scorbot_control_2". This package is where I defined my hardware interface for the robotic arm. In addition to that,"scorbot_control_2" consists of the robotic arm simulation pacakge named "gazebo.launch". The second package is "scorbot_moveit_2", was built using "moveit_setup_assistants". This contains "move_group.launch" the main node needed to communicate with the rest of ROS's control system. In addition to movegroup, this package would also provide moveit_rviz.launch file which woutld act as the main GUI needed to control your robotic arm. 
 
+## Demonstration
+![robotic_arm_demo](https://github.com/JovanLukic79/scorbot_control_2/assets/115774118/fde7b4bf-d4aa-48ad-9057-2868b8ec43db)
+
+
 
 ## Scorbot Hardware Interface (Controller.launch)
 ```
@@ -144,36 +148,12 @@ roslaunch scorbot_moveit_2 moveit_rviz.launch
 ```
 top left corner: File > open config > catkin_ws > src > scorbot_control_2 > scorbot_moveit_2 > launch > moveit.rviz
 ## Help
-
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
+Feel free to contact me: jovanlukic792@gmail.com
 
 ## Authors
-
-Contributors names and contact info
-
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
-
-## Version History
-
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
-* 0.1
-    * Initial Release
+Contributers: jovanlukic792@gmail.com (me)
 
 ## License
 
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
-
 ## Acknowledgments
 
-Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
