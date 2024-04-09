@@ -36,7 +36,7 @@ roslaunch scorbot_control_2 controller.launch is_sim:=true
 
 This launch file launches scorbot_interface_node which is the node that interfaces with the ros_control system, and this node was defined in "scorbot_interface.cpp" file. A publisher ("/arduino/arm_actuate") was created in order to have this node publish data in ones embedded controllers.
 
-It also contains "angle_converter_cpp" node, which was created in order to convert raidians to degrees. This is defined in the "angle_converter.cpp" file and this is used becasue ROS uses radians, and arduino (for example) uses degress. 
+It also contains "angle_converter_cpp" node, which was created in order to convert raidians to degrees. This is defined in the "angle_converter.cpp" file and this is used becasue ROS uses radians, and arduino (for example) uses degrees. 
 
 This launch file also contains the control manager that launches all the controllers being used. In this case, the controller being used to control both the arm joints and the gripper is "position_controllers/JointTrajectoryController". which is provided by ros_control.
 
