@@ -48,6 +48,24 @@ This file also lauches "arm_control_gui". A package that provides a gui in order
 ![robot_arm_sim](https://github.com/JovanLukic79/scorbot_control_2/assets/115774118/3892b64b-a1bb-4a35-8788-b7521585229c)
 
 
+## RVIZ GUI (moveit_rviz.launch)
+```
+cd catkin_ws
+```
+```
+source devel/setup.bash
+```
+```
+roslaunch scorbot_moveit_2 moveit_rviz.launch
+```
+Contains the main RVIZ GUI used to diplay robotic arm controls, joint topics, ect
+
+If the robotic arm does not show up during the initial lauch:
+1) top left corner: File > open config > catkin_ws > src > scorbot_control_2 > scorbot_moveit_2 > launch > moveit.rviz
+
+![robot_arm_gui](https://github.com/JovanLukic79/scorbot_control_2/assets/115774118/eb73f351-7609-4f60-84fd-fcbaad04d8b4)
+
+
 ## Getting Started
 
 ### Dependencies
