@@ -27,8 +27,13 @@ cd catkin_ws
 source devel/setup.bash
 ```
 ```
-roslaunch scorbot_control_2 controller.launch
+roslaunch scorbot_control_2 controller.launch 
 ```
+or if you're running on simulation
+```
+roslaunch scorbot_control_2 controller.launch is_sim:=true
+```
+
 This launch file launches scorbot_interface_node which is the node that interfaces with the ros_control system, and this node was defined in "scorbot_interface.cpp" file. A publisher ("/arduino/arm_actuate") was created in order to have this node publish data in ones embedded controllers.
 
 It also contains "angle_converter_cpp" node, which was created in order to convert raidians to degrees. This is defined in the "angle_converter.cpp" file and this is used becasue ROS uses radians, and arduino (for example) uses degress. 
@@ -114,7 +119,7 @@ cd catkin_ws
 source devel/setup.bash
 ```
 ```
-roslaunch scorbot_control_2 controller.launch
+roslaunch scorbot_control_2 controller.launch is_sim:=true
 ```
 Step 2: Launch move group
 ```
